@@ -1,5 +1,8 @@
-const expenses = [];
+const expenseData = localStorage.getItem("expenses");
 
+let expenses = [];
+if (expenseData != null)
+  expenses = JSON.parse(expenseData);
 const addExpenseButton = document.querySelector("#addexpense");
 
 addExpenseButton.addEventListener("click", function () {
@@ -21,6 +24,8 @@ function Expense(amount, category, date) {
 
 function addExpense(amount, category, date) {
   expenses.push(new Expense(amount, category, date));
+  const data = JSON.stringify(expenses);
+  localStorage.setItem("expenses",data);
 }
 
 function renderExpenses() {
@@ -70,6 +75,8 @@ function calculateTotal(incomeValue) {
 
 function deleteExpense(index) {
   expenses.splice(index, 1);
+  const data = JSON.stringify(expenses);
+  localStorage.setItem("expenses",data);
 }
 
 function filterByCategory(category) {
