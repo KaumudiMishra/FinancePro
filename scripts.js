@@ -1,6 +1,7 @@
-const expenseData = localStorage.getItem("expenses");
+import { addExpense, deleteExpense } from "./utils.js";
 
 let expenses = [];
+const expenseData = localStorage.getItem("expenses");
 if (expenseData != null)
   expenses = JSON.parse(expenseData);
 const addExpenseButton = document.querySelector("#addexpense");
@@ -11,7 +12,7 @@ addExpenseButton.addEventListener("click", function () {
   const category = document.querySelector("#category").value;
   const date = document.querySelector("#date").value;
 
-  addExpense(amount, category, date);
+  addExpense(expenses, amount, category, date);
   calculateTotal(incomeValue);
   renderExpenses();
 });
@@ -22,11 +23,11 @@ function Expense(amount, category, date) {
   this.date = date;
 }
 
-function addExpense(amount, category, date) {
-  expenses.push(new Expense(amount, category, date));
-  const data = JSON.stringify(expenses);
-  localStorage.setItem("expenses",data);
-}
+// function addExpense(amount, category, date) {
+//   expenses.push(new Expense(amount, category, date));
+//   const data = JSON.stringify(expenses);
+//   localStorage.setItem("expenses",data);
+// }
 
 function renderExpenses() {
   const expenseListContainer = document.getElementById("expense-list");
@@ -50,7 +51,7 @@ function renderExpenses() {
     deleteButton.innerHTML = "Delete";
 
     deleteButton.addEventListener("click", function () {
-      deleteExpense(i);
+      deleteExpense(expenses, i);
       renderExpenses();
       calculateTotal(Number(incomeInput.value));
     });
@@ -73,11 +74,11 @@ function calculateTotal(incomeValue) {
   totalDisplay.appendChild(summaryDiv);
 }
 
-function deleteExpense(index) {
-  expenses.splice(index, 1);
-  const data = JSON.stringify(expenses);
-  localStorage.setItem("expenses",data);
-}
+// function deleteExpense(index) {
+//   expenses.splice(index, 1);
+//   const data = JSON.stringify(expenses);
+//   localStorage.setItem("expenses",data);
+// }
 
 function filterByCategory(category) {
   for (let expense of expenses) {
@@ -88,3 +89,12 @@ function filterByCategory(category) {
     }
   }
 }
+
+renderExpenses()
+
+// Feature          |getElementById               |	querySelector
+// Accepts          |ID string only (e.g., 'myId')|  CSS Selectors (e.g., '#myId', '.myClass')
+// Returns          |Single element	              |  First matching element
+// Speed	          |Extremely Fast	              |  Slightly Slower
+// Can be called on	|document only	              |  document or any Element
+calculateTotal(Number(document.querySelector("#income").value)||0);
